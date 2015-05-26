@@ -1,82 +1,87 @@
+'use strict';
+
 // dependencies
 var Bignum = require('bignum');
 
 var MAX_INT_PRECISION = Math.pow(2, 52);  // http://www.w3schools.com/js/js_numbers.asp
 
-module.exports = B62;
+exports = module.exports = B62;
 
 var b62Operations = B62();
 module.exports.encode = b62Operations.encode;
 module.exports.decode = b62Operations.decode;
 
+function B62(charset) {
 
-function B62(charset){
-  charset = charset || "0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ";
-  var base = charset.length;
-  
-  this.encode = function(input, encoding, opts){
-    if(!input) { return ''; }
-    
-    if(typeof input === 'string' && opts && !encoding){
-      input = Bignum(input, opts);
-    } else if(typeof input === 'string'){
+  var base62 = function () { };
+  base62.charset = charset || "0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ";
+  base62.base = base62.charset.length;
+
+  base62.encode = function (input, encoding, opts) {
+    var self = base62;
+    if (!input) { return ''; }
+
+    if (typeof input === 'string' && opts && !encoding) {
+      input = new Bignum(input, opts);
+    } else if (typeof input === 'string') {
       input = Bignum.fromBuffer(new Buffer(input, encoding), opts);
-    } else if (input instanceof Buffer){
+    } else if (input instanceof Buffer) {
       input = Bignum.fromBuffer(input, opts || encoding);
     } else {
-      input = Bignum(input, opts || encoding);
+      input = new Bignum(input, opts || encoding);
     }
-    
+
     var binary = input,
-        dividend = Bignum(binary),
-        result = '';
-    
-    if(binary.eq(0)) { return '0'; }
-    
-    while(binary.gt(MAX_INT_PRECISION)){
-      binary = dividend.div(base);
-      result = charset[remainder(dividend, base, binary)] + result;
+      dividend = new Bignum(binary),
+      result = '';
+
+    if (binary.eq(0)) { return '0'; }
+
+    while (binary.gt(MAX_INT_PRECISION)) {
+      binary = dividend.div(self.base);
+      result = self.charset[remainder(dividend, self.base, binary)] + result;
       dividend = binary;
     }
-    
+
     binary = binary.toNumber();
-    
+
     while (binary > 0) {
-      result = charset[binary % base] + result;
-      binary = Math.floor(binary/base);
+      result = self.charset[binary % self.base] + result;
+      binary = Math.floor(binary / self.base);
     }
-    
+
     return result;
   };
-  
-  this.decode = decode = function(str, encodingBase, opts){
-    var result = Bignum(0),
-        chars = str.split('').reverse(),
-        multiplier = Bignum(1),
-        idx = 0;
-        
-    while(idx < chars.length /*&& multiplier < MAX_INT_PRECISION/base*/){
-      multiplier = Bignum.pow(base, idx);
-      result = result.add(multiplier.mul(charset.indexOf(chars[idx])));
+
+  base62.decode = function (str, encodingBase, opts) {
+    var self = base62;
+    var result = new Bignum(0),
+      chars = str.split('').reverse(),
+      multiplier = new Bignum(1),
+      idx = 0;
+
+    while (idx < chars.length /*&& multiplier < MAX_INT_PRECISION/self.base*/) {
+      multiplier = Bignum.pow(self.base, idx);
+      result = result.add(multiplier.mul(self.charset.indexOf(chars[idx])));
       idx++;
     }
-    
-    if(opts !== undefined && !encodingBase){
+
+    if (opts !== undefined && !encodingBase) {
       return result.toBuffer(opts);
-    } else if(typeof encodingBase === 'number'){
+    } else if (typeof encodingBase === 'number') {
       return result.toString(encodingBase);
     } else {
       return result.toBuffer(opts).toString(encodingBase);
     }
   };
-  
-  return this;
+
+  return base62;
 }
 
 
 // Big num remainder (not very performant)
 function remainder(dividend, divisor, quotient) {
-  if(!quotient){
+  if (!quotient) {
     quotient = dividend.div(divisor);
   }
   return dividend.sub(quotient.mul(divisor));
