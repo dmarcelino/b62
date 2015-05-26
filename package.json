@@ -22,9 +22,7 @@
   },
   "homepage": "https://github.com/dmarcelino/b62#readme",
   "dependencies": {
-    "bignum": "^0.10.0",
-    "binary-string": "^1.0.0",
-    "bit-array": "^0.2.2"
+    "bignum": "^0.10.0"
   },
   "devDependencies": {
     "mocha": "^2.2.5"
