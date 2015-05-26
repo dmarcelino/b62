@@ -30,6 +30,9 @@ describe('b62', function () {
     { input: '>', output: '10' },
     { input: '@', output: '12' },
     { input: '|', output: '20' },
+    { input: '| ', output: '8gw' },
+    { input: 'blah', output: '1NKyKY' },
+    { input: 'Hello world', output: '73xPuGYmZai8Snq' },
     { input: '10000000000000', encoding: 'hex', output: 'kCQoBYJk4' }, // > 2^52
   ];
 

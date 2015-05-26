@@ -50,14 +50,14 @@ function B62(charset){
   };
   
   this.decode = decode = function(str, encodingBase, opts){
-    var result = Bignum(0), 
+    var result = Bignum(0),
         chars = str.split('').reverse(),
-        multiplier = 1,
+        multiplier = Bignum(1),
         idx = 0;
         
     while(idx < chars.length /*&& multiplier < MAX_INT_PRECISION/base*/){
-      multiplier = Math.pow(base, idx);
-      result = result.add(charset.indexOf(chars[idx]) * multiplier);
+      multiplier = Bignum.pow(base, idx);
+      result = result.add(multiplier.mul(charset.indexOf(chars[idx])));
       idx++;
     }
     
