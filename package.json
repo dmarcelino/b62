@@ -12,6 +12,7 @@
   },
   "keywords": [
     "base62",
+    "base 62",
     "encode",
     "decode",
     "url-safe"
