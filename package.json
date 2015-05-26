@@ -1,0 +1,32 @@
+{
+  "name": "b62",
+  "version": "0.0.1",
+  "description": "Encode and decode strings to base62",
+  "main": "b62.js",
+  "scripts": {
+    "test": "mocha test"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/dmarcelino/b62.git"
+  },
+  "keywords": [
+    "base62",
+    "encode",
+    "decode"
+  ],
+  "author": "Dario Marcelino <dario@appscot.com>",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/dmarcelino/b62/issues"
+  },
+  "homepage": "https://github.com/dmarcelino/b62#readme",
+  "dependencies": {
+    "bignum": "^0.10.0",
+    "binary-string": "^1.0.0",
+    "bit-array": "^0.2.2"
+  },
+  "devDependencies": {
+    "mocha": "^2.2.5"
+  }
+}
