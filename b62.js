@@ -5,7 +5,6 @@ var MAX_INT_PRECISION = Math.pow(2, 52);  // http://www.w3schools.com/js/js_numb
 
 module.exports = B62;
 
-
 var b62Operations = B62();
 module.exports.encode = b62Operations.encode;
 module.exports.decode = b62Operations.decode;
@@ -28,41 +27,57 @@ function B62(charset){
       input = Bignum(input, opts || encoding);
     }
     
-    var integer = input,
-        dividend = Bignum(integer),
+    var binary = input,
+        dividend = Bignum(binary),
         result = '';
     
-    if(integer.eq(0)) { return '0'; }
+    if(binary.eq(0)) { return '0'; }
     
-    while(integer.gt(MAX_INT_PRECISION)){
-      integer = dividend.div(base);
-      result = charset[remainder(dividend, base, integer)] + result;
-      dividend = integer;
+    while(binary.gt(MAX_INT_PRECISION)){
+      binary = dividend.div(base);
+      result = charset[remainder(dividend, base, binary)] + result;
+      dividend = binary;
     }
     
-    integer = integer.toNumber();
+    binary = binary.toNumber();
     
-    while (integer > 0) {
-      result = charset[integer % base] + result;
-      integer = Math.floor(integer/base);
+    while (binary > 0) {
+      result = charset[binary % base] + result;
+      binary = Math.floor(binary/base);
     }
     
     return result;
+  };
+  
+  this.decode = decode = function(str, encodingBase, opts){
+    var result = Bignum(0), 
+        chars = str.split('').reverse(),
+        multiplier = 1,
+        idx = 0;
+        
+    while(idx < chars.length /*&& multiplier < MAX_INT_PRECISION/base*/){
+      multiplier = Math.pow(base, idx);
+      result = result.add(charset.indexOf(chars[idx]) * multiplier);
+      idx++;
+    }
+    
+    if(opts !== undefined && !encodingBase){
+      return result.toBuffer(opts);
+    } else if(typeof encodingBase === 'number'){
+      return result.toString(encodingBase);
+    } else {
+      return result.toBuffer(opts).toString(encodingBase);
+    }
   };
   
   return this;
 }
 
 
-// returns the logarithm of y with base x (ie. logx (y))
-function getBaseLog(x, y) {
-  return Math.log(y) / Math.log(x);
-}
-
-// Bing num remainder (not very performant)
-function remainder(dividend, divisor, result) {
-  if(!result){
-    result = dividend.div(divisor);
+// Big num remainder (not very performant)
+function remainder(dividend, divisor, quotient) {
+  if(!quotient){
+    quotient = dividend.div(divisor);
   }
-  return dividend.sub(result.mul(divisor));
+  return dividend.sub(quotient.mul(divisor));
 }

@@ -13,7 +13,8 @@
   "keywords": [
     "base62",
     "encode",
-    "decode"
+    "decode",
+    "url-safe"
   ],
   "author": "Dario Marcelino <dario@appscot.com>",
   "license": "MIT",
