@@ -32,9 +32,10 @@ describe('b62', function () {
     { input: '|', output: '20' },
     { input: '| ', output: '8gw' },
     { input: 'blah', output: '1NKyKY' },
-    { input: 'Hello world', output: '73xPuGYmZai8Snq' },
+    { input: 'Hello world!', output: 't8DGCJrgUyuUEwHT' },
     { input: '10000000000000', encoding: 'hex', output: 'kCQoBYJk4' }, // > 2^52
     { input: 'de305d5475b4431badb2eb6b9e546014', encoding: 'hex', output: '6LgoKL9f4A0C5NI9WZ6gpC' }, // > 2^52
+    { input: 'This is a fairly long testing string,\n to stress b62.', output: 'MGNFAvwKBFRRax5VpUKvoPc3ghSys5WlhNFIrHUag2kF9aAVnhBxoWMG9Jo72wvpmmdPDJQ' },
   ];
 
   describe('Base62', function () {
