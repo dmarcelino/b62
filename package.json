@@ -1,6 +1,6 @@
 {
   "name": "b62",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "Encode and decode strings to base62",
   "main": "b62.js",
   "scripts": {
