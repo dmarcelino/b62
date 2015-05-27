@@ -25,7 +25,7 @@
   },
   "homepage": "https://github.com/dmarcelino/b62#readme",
   "dependencies": {
-    "bignum": "^0.10.0"
+    "base-x": "^1.0.0"
   },
   "devDependencies": {
     "mocha": "^2.2.5"
