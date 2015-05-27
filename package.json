@@ -15,7 +15,8 @@
     "base 62",
     "encode",
     "decode",
-    "url-safe"
+    "url-safe",
+    "base64"
   ],
   "author": "Dario Marcelino <dario@appscot.com>",
   "license": "MIT",
