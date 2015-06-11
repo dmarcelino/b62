@@ -39,7 +39,7 @@ function B62(charset) {
 
     while (binary.gt(MAX_INT_PRECISION)) {
       binary = dividend.div(self.base);
-      result = self.charset[remainder(dividend, self.base, binary)] + result;
+      result = self.charset[dividend.mod(self.base)] + result;
       dividend = binary;
     }
 
@@ -76,13 +76,4 @@ function B62(charset) {
   };
 
   return base62;
-}
-
-
-// Big num remainder (not very performant)
-function remainder(dividend, divisor, quotient) {
-  if (!quotient) {
-    quotient = dividend.div(divisor);
-  }
-  return dividend.sub(quotient.mul(divisor));
 }
